@@ -31,13 +31,18 @@
                         {{ block "post-element" . }}
                             <li class="card mb-3">
                                 <div class="card-body">
-                                    <h5 class="card-title"><a href="{{ .Url }}">{{ .Title }}</a></h5>
+                                    <h5 class="card-title">
+                                        <img src="{{ .FaviconUrl }}" alt="Favicon" class="favicon">
+                                        <a href="{{ .Url }}">{{ .Title }}</a>
+                                    </h5>
+                                    <p class="card-text">{{ .Points }} points</p>
                                     <p class="card-text">{{ .Id }}</p>
                                 </div>
                             </li>
                         {{ end }}
                     {{ end }}
                 </ul>
+                
             </div>
 
             <!-- Submit Post Section -->
