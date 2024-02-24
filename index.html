@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello, htmx!</title>
+    <script src="https://unpkg.com/htmx.org@1.7.0/dist/htmx.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">My Blog</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Blog Posts -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8">
+                <h2 class="mb-4">Latest Posts</h2>
+
+                <ul id="posts-container">
+                    {{ range .Posts }}
+                        {{ block "post-element" . }}
+                            <li class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="{{ .Url }}">{{ .Title }}</a></h5>
+                                    <p class="card-text">{{ .Content }}</p>
+                                </div>
+                            </li>
+                        {{ end }}
+                    {{ end }}
+                </ul>
+                
+                
+            </div>
+
+            <!-- Submit Post Section -->
+            <div class="col-md-4">
+                <h2 class="mb-4">Submit Post</h2>
+                <form hx-vals="_method=POST" hx-post="/submit-post/" hx-target="#posts-container" hx-swap="beforeend">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label">Content</label>
+                        <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="url" class="form-label">URL</label>
+                        <input type="text" class="form-control" id="url" name="url" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
