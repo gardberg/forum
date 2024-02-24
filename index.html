@@ -32,14 +32,12 @@
                             <li class="card mb-3">
                                 <div class="card-body">
                                     <h5 class="card-title"><a href="{{ .Url }}">{{ .Title }}</a></h5>
-                                    <p class="card-text">{{ .Content }}</p>
+                                    <p class="card-text">{{ .Id }}</p>
                                 </div>
                             </li>
                         {{ end }}
                     {{ end }}
                 </ul>
-                
-                
             </div>
 
             <!-- Submit Post Section -->
@@ -49,10 +47,6 @@
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
                         <input type="text" class="form-control" id="title" name="title" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="content" class="form-label">Content</label>
-                        <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="url" class="form-label">URL</label>

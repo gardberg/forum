@@ -1,56 +1,56 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
-	"log"
-	"net/http"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type Post struct {
-	Title   string
-	Content string
-	Url     string
+	Title string
+	Url   string
+	Id    string
 }
 
-func defaultHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("index.html"))
+var allPosts []Post = make([]Post, 0)
 
-	posts := map[string][]Post{
-		"Posts": {
-			{Title: "Post 1", Content: "Content 1", Url: "https://www.google.com"},
-			{Title: "Post 2", Content: "Content 2", Url: "https://www.google.com"},
-		},
-	}
-
-	tmpl.Execute(w, posts)
-
-}
-
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, World!")
-}
-
-func submitPostHandler(w http.ResponseWriter, r *http.Request) {
-	title := r.FormValue("title")
-	content := r.FormValue("content")
-	url := r.FormValue("url")
-
-	// Print form values to the server logs
-	fmt.Println("Received form values:")
-	fmt.Println("Title:", title)
-	fmt.Println("Content:", content)
-	fmt.Println("URL:", url)
-
-	tmpl := template.Must(template.ParseFiles("index.html"))
-	tmpl.ExecuteTemplate(w, "post-element", Post{Title: title, Content: content, Url: url})
-
+func NewPost(title, url string) Post {
+	// auto generate uuid id
+	return Post{Title: title, Url: url, Id: uuid.New().String()}
 }
 
 func main() {
-	http.HandleFunc("/", defaultHandler)
-	http.HandleFunc("/hello", helloHandler)
-	http.HandleFunc("/submit-post/", submitPostHandler)
-	fmt.Println("Server is running on http://localhost:8000")
-	log.Fatal(http.ListenAndServe("127.0.0.1:8000", nil))
+
+	// create test posts
+	allPosts = append(allPosts, NewPost("Post 1", "https://www.google.com"))
+	allPosts = append(allPosts, NewPost("Post 2", "https://www.facebook.com"))
+
+	// start server
+	r := gin.Default()
+
+	r.GET("/", defaultHandler)
+	r.POST("/submit-post", submitPostHandler)
+
+	if err := r.Run("127.0.0.1:8000"); err != nil {
+		panic(err)
+	}
+}
+
+func defaultHandler(c *gin.Context) {
+	tmpl := template.Must(template.ParseFiles("index.html"))
+
+	posts := map[string][]Post{
+		"Posts": allPosts,
+	}
+
+	tmpl.Execute(c.Writer, posts)
+}
+
+
+func submitPostHandler(c *gin.Context) {
+	title := c.PostForm("title")
+	url := c.PostForm("url")
+
+	tmpl := template.Must(template.ParseFiles("index.html"))
+	tmpl.ExecuteTemplate(c.Writer, "post-element", NewPost(title, url))
 }
