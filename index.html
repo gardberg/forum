@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello, htmx!</title>
+    <title>Trending ML</title>
     <script src="https://unpkg.com/htmx.org@1.7.0/dist/htmx.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
@@ -12,7 +12,7 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">My Blog</a>
+            <a class="navbar-brand" href="#">Trending ML</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -23,9 +23,7 @@
     <!-- Blog Posts -->
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-8">
-                <h2 class="mb-4">Latest Posts</h2>
-
+            <div class="col-md-8 mx-auto">
                 <ul id="posts-container">
                     {{ range .Posts }}
                         {{ block "post-element" . }}
@@ -62,6 +60,22 @@
             </div>
         </div>
     </div>
+
+    <!-- Show more posts button -->
+    <div class="container mt-2 mb-4">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <button hx-get="/more-posts/" hx-target="#posts-container" class="btn btn-primary" hx-swap="beforeend">More</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Footer -->
+
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; Trending ML</p>
+    </footer>
 
 </body>
 
